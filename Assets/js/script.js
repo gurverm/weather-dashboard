@@ -45,7 +45,7 @@ $(function () {
       "https://api.openweathermap.org/data/2.5/weather?q=" +
       user +
       "&appid=" +
-      weatherAPIKey;
+      weatherAPIKey+ "&units=metric";
 
     //console.log(geocodingURL);
 
@@ -58,10 +58,13 @@ $(function () {
         // showing current weather
 
         var currentWeatherCard = `<h2>Current Weather: </h2>
-          <img class="card-img-top" src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt="Card image cap"  height="20%" width="20%">
+          <img class="card-img-top" src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt="Card image cap"  height="50px" width="50px">
           <div class="card-body">
             <h5 class="card-title">${data.name}</h5>
-            <p class="card-text"></p>
+            <p class="card-text">Temperature: ${data.main.temp}</p>
+            <p class="card-text">Humidity: ${data.main.humidity}</p>
+            <p class="card-text">Wind-Speed: ${data.wind.speed}</p>
+
             <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
           </div>`;
 
