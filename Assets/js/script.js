@@ -45,7 +45,8 @@ $(function () {
       "https://api.openweathermap.org/data/2.5/weather?q=" +
       user +
       "&appid=" +
-      weatherAPIKey+ "&units=metric";
+      weatherAPIKey +
+      "&units=metric";
 
     //console.log(geocodingURL);
 
@@ -56,14 +57,15 @@ $(function () {
       .then(function (data) {
         console.log(data);
         // showing current weather
+        processData(data);
 
         var currentWeatherCard = `<h2>Current Weather: </h2>
           <img class="card-img-top" src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt="Card image cap"  height="50px" width="50px">
           <div class="card-body">
             <h5 class="card-title">${data.name}</h5>
-            <p class="card-text">Temperature: ${data.main.temp}</p>
-            <p class="card-text">Humidity: ${data.main.humidity}</p>
-            <p class="card-text">Wind-Speed: ${data.wind.speed}</p>
+            <p class="card-text">Temperature: ${data.main.temp} °C</p>
+            <p class="card-text">Humidity: ${data.main.humidity} %</p>
+            <p class="card-text">Wind-Speed: ${data.wind.speed} km/h</p>
 
             <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
           </div>`;
@@ -84,7 +86,52 @@ $(function () {
       "&appid=" +
       weatherAPIKey;
   };
-});
 
+  function processData(data) {
+    lon = data.coord.lon;
+    lat = data.coord.lat;
+
+    var getFiveDayForecast = function (user) {
+      var fiveDayForecastURL =
+
+      "https://api.openweathermap.org/data/2.5/forecast?lat="+ lat + "&lon="+lon+"&appid="+weatherAPIKey +
+      "&units=metric";
+
+      //console.log(geocodingURL);
+  
+      fetch(fiveDayForecastURL)
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          console.log(data);
+          // showing current weather
+          
+  
+          var fiveDayForecastCard = `
+          <h3>5-Day Forecast:</h3>
+          <div class="card-group" id="forecast-cards">
+            <div class="card">
+              <img class="card-img-top" src="" alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title">${data.name}</h5>
+                <p class="card-text">Temperature: ${data.main.temp} °C</p>
+                <p class="card-text">Humidity: ${data.main.humidity} %</p>
+                <p class="card-text">Wind-Speed: ${data.wind.speed} km/h</p>
+                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+              </div>
+            </div>`
+          
+          forecastCardsEl.append(fiveDayForecastCard);
+  
+          displayFiveDayForcast(user);
+        })
+        .catch(function (error) {
+          if (error) throw error;
+        });
+    };
+    
+  }
+});
 
 //https://api.openweathermap.org/data/2.5/weather?q=toronto&appid=fa91889f3e94337a7424b4068b6b64dc&units=metric
