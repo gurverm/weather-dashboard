@@ -15,6 +15,7 @@ $(function () {
   // var windSpeedEl = document.querySelector("#wind-speed");
   // var forecastEl = document.querySelector("#forecast");
   var forecastCardsEl = $("#forecast-cards");
+  var fiveForecastCardsEl = $("#forecast-cards-small");
 
   // API variables created
   var weatherAPIKey = "fa91889f3e94337a7424b4068b6b64dc";
@@ -40,6 +41,9 @@ $(function () {
   // using the geocoding API allows users to time in a city name to fetch results rather than long/lat inputs.
   //var geocodingURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&limit=" + limit + "&appid=" + weatherAPIKey;
 
+  var lat;
+  var lon; 
+  
   var getCityResults = function (user) {
     var geocodingURL =
       "https://api.openweathermap.org/data/2.5/weather?q=" +
@@ -58,6 +62,11 @@ $(function () {
         console.log(data);
         // showing current weather
         processData(data);
+
+        lat = data.coord.lat;
+        lon = data.coord.lon;
+
+
 
         var currentWeatherCard = `<h2>Current Weather: </h2>
           <img class="card-img-top" src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt="Card image cap"  height="50px" width="50px">
@@ -79,6 +88,7 @@ $(function () {
       });
   };
 
+
   var displayForcast = function (userCity) {
     var geocodingURL =
       "https://api.openweathermap.org/data/2.5/forecast?q=" +
@@ -89,16 +99,26 @@ $(function () {
 
   function processData(data) {
     lon = data.coord.lon;
+
     lat = data.coord.lat;
+    // console.log(lat,lon);
 
     var getFiveDayForecast = function (user) {
+
+      var lat = data.coord.lat;
+      var lon = data.coord.lon;
+
       var fiveDayForecastURL =
+        "https://api.openweathermap.org/data/2.5/forecast?lat=" +
+        lat +
+        "&lon=" +
+        lon +
+        "&appid=" +
+        weatherAPIKey +
+        "&units=metric";
 
-      "https://api.openweathermap.org/data/2.5/forecast?lat="+ lat + "&lon="+lon+"&appid="+weatherAPIKey +
-      "&units=metric";
+        console.log(fiveDayForecastURL);
 
-      //console.log(geocodingURL);
-  
       fetch(fiveDayForecastURL)
         .then(function (response) {
           return response.json();
@@ -106,8 +126,7 @@ $(function () {
         .then(function (data) {
           console.log(data);
           // showing current weather
-          
-  
+
           var fiveDayForecastCard = `
           <h3>5-Day Forecast:</h3>
           <div class="card-group" id="forecast-cards">
@@ -120,17 +139,26 @@ $(function () {
                 <p class="card-text">Wind-Speed: ${data.wind.speed} km/h</p>
                 <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
               </div>
-            </div>`
-          
-          forecastCardsEl.append(fiveDayForecastCard);
-  
+            </div>`;
+
+          fiveForecastCardsEl.append(fiveDayForecastCard);
+
           displayFiveDayForcast(user);
         })
         .catch(function (error) {
           if (error) throw error;
         });
     };
-    
+    var displayFiveDayForcast = function (userCity) {
+      var fiveDayForecastURL =
+        "https://api.openweathermap.org/data/2.5/forecast?lat=" +
+        lat +
+        "&lon=" +
+        lon +
+        "&appid=" +
+        weatherAPIKey +
+        "&units=metric";
+    };
   }
 });
 
