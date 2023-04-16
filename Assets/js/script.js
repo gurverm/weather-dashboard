@@ -41,9 +41,6 @@ $(function () {
   // using the geocoding API allows users to time in a city name to fetch results rather than long/lat inputs.
   //var geocodingURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&limit=" + limit + "&appid=" + weatherAPIKey;
 
-  var lat;
-  var lon; 
-  
   var getCityResults = function (user) {
     var geocodingURL =
       "https://api.openweathermap.org/data/2.5/weather?q=" +
@@ -61,33 +58,29 @@ $(function () {
       .then(function (data) {
         console.log(data);
         // showing current weather
-        processData(data);
 
-        lat = data.coord.lat;
-        lon = data.coord.lon;
-
-
+        var lat = data.coord.lat;
+        var lon = data.coord.lon;
 
         var currentWeatherCard = `<h2>Current Weather: </h2>
-          <img class="card-img-top" src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt="Card image cap"  height="50px" width="50px">
+          <img class="" src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt="Card image cap"  width = 10%>
           <div class="card-body">
             <h5 class="card-title">${data.name}</h5>
             <p class="card-text">Temperature: ${data.main.temp} °C</p>
             <p class="card-text">Humidity: ${data.main.humidity} %</p>
             <p class="card-text">Wind-Speed: ${data.wind.speed} km/h</p>
-
-            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
           </div>`;
 
         forecastCardsEl.append(currentWeatherCard);
 
         displayForcast(user);
+
+        getFiveDayForecast(user, lat, lon);
       })
       .catch(function (error) {
         if (error) throw error;
       });
   };
-
 
   var displayForcast = function (userCity) {
     var geocodingURL =
@@ -97,69 +90,68 @@ $(function () {
       weatherAPIKey;
   };
 
-  function processData(data) {
-    lon = data.coord.lon;
+  var getFiveDayForecast = function (city, lat, lon) {
+    var fiveDayForecastURL =
+      "https://api.openweathermap.org/data/2.5/forecast?lat=" +
+      lat +
+      "&lon=" +
+      lon +
+      "&appid=" +
+      weatherAPIKey +
+      "&units=metric";
 
-    lat = data.coord.lat;
-    // console.log(lat,lon);
+    console.log(fiveDayForecastURL);
 
-    var getFiveDayForecast = function (user) {
+    fetch(fiveDayForecastURL)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        console.log(data);
+        // showing current weather
 
-      var lat = data.coord.lat;
-      var lon = data.coord.lon;
+        console.log(data.list[0].weather[0].icon);
 
-      var fiveDayForecastURL =
-        "https://api.openweathermap.org/data/2.5/forecast?lat=" +
-        lat +
-        "&lon=" +
-        lon +
-        "&appid=" +
-        weatherAPIKey +
-        "&units=metric";
+        
 
-        console.log(fiveDayForecastURL);
+        var fiveDayForecastCard = `
+        <h3>5-Day Forecast:</h3>
+        <div class="card-group" id="forecast-cards-small">`;
 
-      fetch(fiveDayForecastURL)
-        .then(function (response) {
-          return response.json();
-        })
-        .then(function (data) {
-          console.log(data);
-          // showing current weather
+for (var i = 0; i < data.list.length; i+=8) {
+  fiveDayForecastCard += `
+          <div class="card">
+            
+          <img class="" src="https://openweathermap.org/img/wn/${data.list[i].weather[0].icon}@2x.png" alt="Card image cap"  width = 10%>
 
-          var fiveDayForecastCard = `
-          <h3>5-Day Forecast:</h3>
-          <div class="card-group" id="forecast-cards">
-            <div class="card">
-              <img class="card-img-top" src="" alt="Card image cap">
-              <div class="card-body">
-                <h5 class="card-title">${data.name}</h5>
-                <p class="card-text">Temperature: ${data.main.temp} °C</p>
-                <p class="card-text">Humidity: ${data.main.humidity} %</p>
-                <p class="card-text">Wind-Speed: ${data.wind.speed} km/h</p>
-                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-              </div>
-            </div>`;
+            
+            <div class="card-body">
+              <h5 class="card-title">Date: ${data.list[i].dt_txt}</h5>
+              <p class="card-text">Temperature: ${data.list[i].main.temp} °C</p> 
+              <p class="card-text">Humidity: ${data.list[i].main.humidity} %</p> 
+              <p class="card-text">Wind-Speed: ${data.list[i].wind.speed} km/h</p> 
+            </div>
+          </div>`;
+}
 
-          fiveForecastCardsEl.append(fiveDayForecastCard);
+        fiveForecastCardsEl.append(fiveDayForecastCard);
 
-          displayFiveDayForcast(user);
-        })
-        .catch(function (error) {
-          if (error) throw error;
-        });
-    };
-    var displayFiveDayForcast = function (userCity) {
-      var fiveDayForecastURL =
-        "https://api.openweathermap.org/data/2.5/forecast?lat=" +
-        lat +
-        "&lon=" +
-        lon +
-        "&appid=" +
-        weatherAPIKey +
-        "&units=metric";
-    };
-  }
+        displayFiveDayForcast(user);
+      })
+      .catch(function (error) {
+        if (error) throw error;
+      });
+  };
+  var displayFiveDayForcast = function (userCity) {
+    var fiveDayForecastURL =
+      "https://api.openweathermap.org/data/2.5/forecast?lat=" +
+      lat +
+      "&lon=" +
+      lon +
+      "&appid=" +
+      weatherAPIKey +
+      "&units=metric";
+  };
 });
 
 //https://api.openweathermap.org/data/2.5/weather?q=toronto&appid=fa91889f3e94337a7424b4068b6b64dc&units=metric
