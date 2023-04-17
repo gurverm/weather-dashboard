@@ -20,6 +20,7 @@ $(function () {
   // API variables created
   var weatherAPIKey = "fa91889f3e94337a7424b4068b6b64dc";
 
+
   var formSubmitHandler = function (event) {
     event.preventDefault();
 
@@ -112,17 +113,15 @@ $(function () {
 
         console.log(data.list[0].weather[0].icon);
 
-        
-
         var fiveDayForecastCard = `
         <h3>5-Day Forecast:</h3>
         <div class="card-group" id="forecast-cards-small">`;
 
-for (var i = 0; i < data.list.length; i+=8) {
-  fiveDayForecastCard += `
+        for (var i = 0; i < data.list.length; i += 8) {
+          fiveDayForecastCard += `
           <div class="card">
             
-          <img class="" src="https://openweathermap.org/img/wn/${data.list[i].weather[0].icon}@2x.png" alt="Card image cap"  width = 10%>
+          <img class="" src="https://openweathermap.org/img/wn/${data.list[i].weather[0].icon}@2x.png" alt="Card image cap"  width = 40%>
 
             
             <div class="card-body">
@@ -132,7 +131,7 @@ for (var i = 0; i < data.list.length; i+=8) {
               <p class="card-text">Wind-Speed: ${data.list[i].wind.speed} km/h</p> 
             </div>
           </div>`;
-}
+        }
 
         fiveForecastCardsEl.append(fiveDayForecastCard);
 
