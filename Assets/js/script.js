@@ -20,7 +20,6 @@ $(function () {
   // API variables created
   var weatherAPIKey = "fa91889f3e94337a7424b4068b6b64dc";
 
-
   var formSubmitHandler = function (event) {
     event.preventDefault();
 
@@ -34,6 +33,36 @@ $(function () {
   };
 
   searchFormEl.addEventListener("submit", formSubmitHandler);
+
+// Function to save search query and result in local storage
+function saveSearchResult(query, result) {
+  localStorage.setItem(query, JSON.stringify(result));
+}
+
+// Function to retrieve all keys from local storage
+function getSearchHistory() {
+  var keys = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    keys.push(localStorage.key(i));
+  }
+  return keys;
+}
+
+// Function to retrieve weather data from local storage
+function getSearchResult(query) {
+  var result = localStorage.getItem(query);
+  return result ? JSON.parse(result) : null;
+}
+
+// Example usage
+var searchQuery = '';
+var weatherData = {};
+saveSearchResult(searchQuery, weatherData);
+
+var previousSearches = getSearchHistory(); 
+var result = getSearchResult('');
+
+
 
   //var limit = 5;
 
