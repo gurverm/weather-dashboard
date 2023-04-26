@@ -2,18 +2,6 @@
 $(function () {
   var searchFormEl = document.querySelector("#search-form");
   var searchInputEl = document.querySelector("#search-input");
-  // var searchBtnEl = document.querySelector("#fetch-button");
-  // var searchHistoryEl = document.querySelector("#search-history");
-  // var searchHistoryListEl = document.querySelector("#search-history-list");
-  // var currentWeatherEl = document.querySelector("#current-weather");
-
-  // var cityNameEl = document.querySelector("#city-name");
-  // var dateEl = document.querySelector("#date");
-  // var faviconEl = document.querySelector("#favicon");
-  // var temperatureEl = document.querySelector("#temperature");
-  // var humidityEl = document.querySelector("#humidity");
-  // var windSpeedEl = document.querySelector("#wind-speed");
-  // var forecastEl = document.querySelector("#forecast");
   var forecastCardsEl = $("#forecast-cards");
   var fiveForecastCardsEl = $("#forecast-cards-small");
 
@@ -164,7 +152,7 @@ var result = getSearchResult('');
 
         fiveForecastCardsEl.append(fiveDayForecastCard);
 
-        displayFiveDayForcast(user);
+        // displayFiveDayForcast(user);
       })
       .catch(function (error) {
         if (error) throw error;
