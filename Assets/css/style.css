@@ -1,1 +1,26 @@
 
+body,
+ul {
+  font-family: 'Fira Sans Condensed', sans-serif;
+  font-weight: 400;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+}
+
+h1,
+#title {
+  font-family: 'Sedgwick Ave Display';
+  font-size: 1.1em;
+  font-weight: bolder;
+}
+
+form {
+  font-family: 'Fira Sans', sans-serif;
+}
