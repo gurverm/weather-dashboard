@@ -35,6 +35,14 @@ function getSearchHistory() {
   }
   return keys;
 }
+//      <h3>Search History</h3>
+// <ul class="list-group list-group-flush" id="search-history-list">
+// <li class="list-group-item"></li>
+// <li class="list-group-item"></li>
+// <li class="list-group-item"></li>
+// <li class="list-group-item"></li>
+// <li class="list-group-item"></li>
+// </ul>// 
 
 // Function to retrieve weather data from local storage
 function getSearchResult(query) {
