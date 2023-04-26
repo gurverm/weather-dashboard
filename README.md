@@ -17,7 +17,7 @@ When a user inputs a city they are presented with the city name, the current dat
 
 Below are images from the deployed application showcasing the weather dashboard in use.
 
-![Weather-Dashboard Deployed](./assets/Images/applicationresults.PNG)
+![weatherDashboard](./assets/Images/applicationresults.PNG)
 
 link to deployed application: https://gurverm.github.io/weather-dashboard/
 
